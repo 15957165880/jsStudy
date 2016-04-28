@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>事件</title>
+</head>
+
+<body>
+    ie的事件流叫做事件冒泡流
+    <br/> netspace的事件流叫做事件捕获
+    <br/> 事件冒泡 由具体的底层向上传播
+    <br/> 事件捕获 由最上层向下传播到具体的节点
+    <br/>
+    <br/>
+    <br/> dom事件流: 事件捕获阶段，处于目标阶段，事件冒泡阶段
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <form class="testDiv" method="get">
+        <input type="text" name="user" value="user">
+        <select name="h">
+            
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+        
+        <input type="button" id="myBtn" onclick="console.log(user.value)" value="click">
+        <input type="submit" value="提交">
+    </form>
+    
+    <br/>
+    <br/>
+    <br/>
+    <input type="button" id="myBtn1" value="myBtn1">
+
+    <script type="text/javascript">
+    var myBtn=document.getElementById("myBtn")
+    myBtn.onclick= null //删除点击事件
+
+    var myBtn1=document.getElementById("myBtn1")
+
+    if(typeof addEventListener=="function"){    
+        myBtn1.addEventListener('click',c1,false); // false 表示事件冒泡阶段 调用 
+        myBtn1.addEventListener('click',c2,true); // true 事件捕获阶段 调用
+        myBtn1.removeEventListener('click',c1,false); 
+    }else{ //ie 
+        myBtn1.attachEvent("onclick",c2)
+        myBtn1.attachEvent("onclick",c1)
+        myBtn1.detachEvent("onclick",c1)
+    }
+    console.log(myBtn1.addEventListener)
+
+    function c1(){
+        try{
+            console.log("c1")
+        }catch(e){
+            alert("c1")
+        }
+    }
+
+    function c2(){
+        try{
+            console.log("c2")
+        }catch(e){
+            alert("c2")
+        }
+    }
+
+
+
+    var eventUint={
+        add:function(ele,type,fn){
+            if(ele.addEventListener){
+                ele.addEventListener(type,fn,false);
+            }else if(ele.attachEvent){
+                ele.attachEvent("on"+type,fn);
+            }else{
+                ele["on"+type]=fn;
+            }
+        },
+        remove:function(ele,type,fn){
+            if(ele.removeEventListener){
+                ele.removeEventListener(type,fn,false);
+            }else if(ele.detachEvent){
+                ele.detachEvent("on"+type,fn);
+            }else{
+                ele["on"+type]= null ;
+            }
+        },
+    }
+
+    </script>
+</body>
+
+</html>
