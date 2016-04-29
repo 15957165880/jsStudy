@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>事件</title>
+    <style type="text/css">
+        #div1,#div2,#div3,#div4{
+            width:300px;
+            height:100px;
+            background:#c2c2c2;
+            margin:10px auto;
+        }
+    </style>
+</head>
+
+<body onload="console.log('body is loaded')" onunload="alert('Unloaded!')">
+    <p>resize事件：IE , Chrome,Safari,Opera 会在窗口改变1px时执行;firefox 会在窗口停止改变时执行</p>
+    <p>document是window的一个属性</p>
+    <div id="div1"><input type="button" value="btn1" id="btn1"></div>
+    <div id="div2"><input type="button" value="btn2" id="btn2"></div>
+    <div id="div3"><input type="button" value="btn3" id="btn3"></div>
+    <div id="div4"><input type="text" value="btn4" id="btn4"></div>
+
+    <script type="text/javascript">
+        var eventUint={
+            add:function(ele,type,fn){
+                if(ele.addEventListener){
+                    ele.addEventListener(type,fn,false);
+                }else if(ele.attachEvent){
+                    ele.attachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]=fn;
+                }
+            },
+            remove:function(ele,type,fn){
+                if(ele.removeEventListener){
+                    ele.removeEventListener(type,fn,false);
+                }else if(ele.detachEvent){
+                    ele.detachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]= null ;
+                }
+            },
+        }
+        var body=document.body||body,
+            div1=document.getElementById("div1"),
+            btn1=document.getElementById("btn1"),
+            div2=document.getElementById("div2"),
+            btn2=document.getElementById("btn2"),
+            div3=document.getElementById("div3"),
+            btn3=document.getElementById("btn3"),
+            btn4=document.getElementById("btn4");
+
+        body.onclick=function(event){
+            console.log("body: "+event.eventPhase)
+            event.stopImmediatePropagation()
+        }
+        div1.onclick=function(event){
+            console.log("div1: "+event.eventPhase)
+            event.stopImmediatePropagation()
+        }
+        div2.onclick=function(event){
+            console.log("div2: "+event.eventPhase)
+        }
+        btn1.onclick=function(event){
+            console.log("btn1: "+event.eventPhase)
+            console.log(event.button)
+            event.stopPropagation()
+            btn4.focus()
+        }
+        btn2.onclick=function(event){
+            btn4.blur()
+            console.log("btn2: "+event.eventPhase)
+        }
+
+
+        div3.addEventListener('click',function(){
+             console.log("div3: "+event.eventPhase)
+        },false) // 事件捕获阶段执行
+        btn3.addEventListener('click',function(){
+             console.log("btn3: "+event.eventPhase)
+             event.stopPropagation()
+        },true)
+
+    var eventUint={
+        add:function(ele,type,fn){
+            if(ele.addEventListener){
+                ele.addEventListener(type,fn,false);
+            }else if(ele.attachEvent){
+                ele.attachEvent("on"+type,fn);
+            }else{
+                ele["on"+type]=fn;
+            }
+        },
+        remove:function(ele,type,fn){
+            if(ele.removeEventListener){
+                ele.removeEventListener(type,fn,false);
+            }else if(ele.detachEvent){
+                ele.detachEvent("on"+type,fn);
+            }else{
+                ele["on"+type]= null ;
+            }
+        },
+    }
+    var image= new Image();
+        image.src="1.jpg"
+        eventUint.add(image,'load',function(event){
+            console.log("image is loaded")
+            console.log(event.eventPhase)
+        })
+
+
+        eventUint.add(window,'unload',function(event){
+            return ("unloaded!")
+        })
+        eventUint.add(window,'scroll',function(event){
+            console.log(document.body.scrollTop)
+        })
+
+        eventUint.add(window,"mousedown",function(event){
+            console.log(event.button) // 0左键 1滚轮 2右键
+        })
+
+        eventUint.add(document,"mousewheel",function(event){
+            console.log(event.wheelDelta) //向前120 向后-120
+        })
+
+        eventUint.add(document,"DOMMouseScroll",function(event){
+            console.log(event.detail) //向前120 向后-120
+        })
+        eventUint.add(document,"keydown",function(event){
+            console.log(event.keyCode) 
+            // console.log(event.charCode)
+            console.log(event)
+            var loc=event.location||event.keyLocation;
+            console.log(loc)
+        })
+        console.log(document)
+        console.log(window)
+        console.log(window.document)
+        eventUint.add(btn4,"textInput",function(event){
+  
+            console.log(event.data)
+            console.log(event)
+        })
+    </script>
+</body>
+
+</html>

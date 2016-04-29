@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件</title>
+    <style type="text/css">
+        #div1,#div2,#div3,#div4{
+            width:300px;
+            height:100px;
+            background:#c2c2c2;
+            margin:10px auto;
+        }
+        #arrow{
+            width:50px;
+            height:50px;
+            text-align:center;
+            line-height:50px;
+            font-size:30px;
+            background:#ccc;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body >
+
+    <ul id="myList">
+        <li class="">item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+    </ul>
+    <p id="output"></p>
+    <p id="output1"></p>
+    <p id="output2"></p>
+    <div id="arrow">
+        ^
+    </div>
+
+    <script type="text/javascript">
+        var eventUint={
+            add:function(ele,type,fn){
+                if(ele.addEventListener){
+                    ele.addEventListener(type,fn,false);
+                }else if(ele.attachEvent){
+                    ele.attachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]=fn;
+                }
+            },
+            remove:function(ele,type,fn){
+                if(ele.removeEventListener){
+                    ele.removeEventListener(type,fn,false);
+                }else if(ele.detachEvent){
+                    ele.detachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]= null ;
+                }
+            },
+        }
+
+        var isSupported=document.implementation.hasFeature("MutationEvents","2.0")
+        console.log(isSupported)
+
+        eventUint.add(window,'load',function(){
+            var list=document.getElementById("myList"),
+                lis=list.getElementsByTagName("li");
+            eventUint.add(document,"DOMSubtreeModified",function(event){
+                console.log(event.type)
+                console.log(event.target)
+                console.log(event.eventPhase)
+            })
+
+
+            eventUint.add(document,"DOMNodeRemoved",function(event){
+                console.log(event.type)
+                console.log(event.target)
+                console.log(event.eventPhase)
+                event.stopPropagation()
+            })
+            eventUint.add(document,"DOMNodeInserted",function(event){
+                console.log(event.type)
+                console.log(event.target)
+                console.log(event.eventPhase)
+                event.stopPropagation()
+            })
+            eventUint.add(document,"DOMAttrModified",function(event){
+                console.log(event.type)
+                console.log(event.target)
+                console.log(event.eventPhase)
+                event.stopPropagation()
+            })
+            eventUint.add(document,"DOMContentLoaded",function(event){
+                console.log("DOMContentLoaded")
+                
+            })
+           
+            eventUint.add(window,"readystatechange",function(event){
+                console.log(document.readyState)
+                
+            })
+            eventUint.add(window,"hashchange",function(event){
+                console.log(event.type)
+                
+            })  
+            // eventUint.add(window,"deviceorientation",function(event){
+            //     var output=document.getElementById("output")
+            //     output.innerHTML="alpha-z="+Math.round(event.alpha)
+            //                     +"<br />beta-x="+Math.round(event.beta)
+            //                     +"<br />gamma-y="+Math.round(event.gamma)
+            //     var arrow=document.getElementById("arrow")
+            //     arrow.style.webkitTransform="rotate("+Math.round(event.alpha)+"deg)"
+            // })  
+            eventUint.add(window,"orientationchange",function(event){
+                var output=document.getElementById("output1")
+                output.innerHTML=window.orientation
+            })         
+            eventUint.add(window,"MozOrientation",function(event){
+                var output=document.getElementById("output2")
+                output.innerHTML="x="event.x
+            })  
+
+            setTimeout(function(){
+
+                // lis[0].remove()
+                // var liLast=document.createElement("li")
+                // var text=document.createTextNode("dfdf")
+                // liLast.appendChild(text)
+                // list.appendChild(liLast)
+                // var liLast1=document.createElement("li")
+                // var text1=document.createTextNode("dfddf")
+                // list.replaceChild(liLast1,lis[0])
+            },500)
+
+
+
+
+
+
+
+        })
+ 
+    </script>
+</body>
+
+</html>

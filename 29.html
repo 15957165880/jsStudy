@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件</title>
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body >
+
+
+    <p id="output"></p>
+    <p id="output1">dsfdsa</p>
+    <p id="output2">dsfadsf</p>
+
+
+    <script type="text/javascript">
+        var eventUint={
+            add:function(ele,type,fn){
+                if(ele.addEventListener){
+                    ele.addEventListener(type,fn,false);
+                }else if(ele.attachEvent){
+                    ele.attachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]=fn;
+                }
+            },
+            remove:function(ele,type,fn){
+                if(ele.removeEventListener){
+                    ele.removeEventListener(type,fn,false);
+                }else if(ele.detachEvent){
+                    ele.detachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]= null ;
+                }
+            },
+        }
+
+        var isSupported=document.implementation.hasFeature("MutationEvents","2.0")
+        console.log(isSupported)
+
+        function touchEvent(event){
+            if(event.touches.length==1){
+                var output=document.getElementById("output")   
+                console.log(event.touches) 
+                console.log(event.targetTouchs) 
+                switch(event.type){
+                    case "touchstart":
+                        output.innerHTML="touch started x="+event.touches[0].clientX+",y="+event.touches[0].clientY;
+                        break;
+                    case "touchend":
+                        alert()
+                        output.innerHTML="touch ended x="+event.changedTouches[0].clientX+",y="+event.touches[0].clientY;
+                        break;
+                    case "touchmove":
+                        event.preventDefault();
+                        output.innerHTML="touch moved x="+event.changedTouches[0].clientX+",y="+event.touches[0].clientY;
+                        break;
+                    case "gesturestart": //ios safari 浏览器才有
+                        output.innerHTML="gesturestart rotation="
+                        break;
+
+                }
+
+            }
+        }
+
+
+        eventUint.add(window,'load',function(){
+           eventUint.add(document,"touchstart",touchEvent)
+           eventUint.add(document,"touchend",touchEvent)
+           eventUint.add(document,"touchmove",touchEvent)
+           eventUint.add(document,"gesturestart",touchEvent)
+        })
+ 
+    </script>
+</body>
+
+</html>
