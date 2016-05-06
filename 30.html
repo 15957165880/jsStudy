@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件</title>
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body >
+
+
+    <div id="div">
+        <input type="button" id="btn" value="btn">
+
+    </div>
+
+    <script type="text/javascript">
+        var eventUint={
+            addFn:function(ele,type,fn){
+                if(ele.addEventListener){
+                    ele.addEventListener(type,fn,false);
+                }else if(ele.attachEvent){
+                    ele.attachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]=fn;
+                }
+            },
+            removeFn:function(ele,type,fn){
+                if(ele.removeEventListener){
+                    ele.removeEventListener(type,fn,false);
+                }else if(ele.detachEvent){
+                    ele.detachEvent("on"+type,fn);
+                }else{
+                    ele["on"+type]= null ;
+                }
+            },
+            getTarget:function(ele){
+                return (typeof ele.target=="object")?ele.target:ele.srcElement;
+            }
+        }
+        eventUint.addFn(window,'load',function(){
+            var div=document.getElementById("div");
+            eventUint.addFn(div,'click',function(ele){
+                var target=eventUint.getTarget(ele),
+                    id=target.id;
+                switch(id){
+                    case 'btn':   
+                        div.innerHTML='<h1 id="btn1">btn1</h1>'
+                        break;
+                    case 'btn1':
+                        div.innerHTML='<input type="button" id="btn" value="btn">'
+                        break;                   
+                }
+            })
+        })
+ 
+    </script>
+</body>
+
+</html>
