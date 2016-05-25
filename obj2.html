@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+
+	function Person(name,age){
+		if(this instanceof Person){
+			this.name=name;
+			this.age=age;
+		}else{
+			return new Person(name,age)
+		}
+
+	}
+	function p(){
+
+	}
+	Person.prototype.address=function(address){
+		return address
+	}
+	// var person1=new Person()
+	// console.log(person1)
+
+	function Worker(name,age,job){
+		// Person.call(this,name,age)  
+		this.job=job
+	}
+	Worker.prototype=new Person()
+
+	console.log(Worker)
+
+	var worker1=new Worker("lhs",219,"web")
+	
+	console.log(worker1.name)
+	console.log(worker1.address("hangzhou"))
+
+	</script>
+	
+</body>
+</html>

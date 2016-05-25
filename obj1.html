@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+		var person={};
+			person.name="liaohs";
+			person.age="29";
+			person.job="web";
+			person.arr=[];
+			person.obj={b:"b",a:{},arr:[]}
+
+			// Object.freeze(person) //冻结对象对象 防止 删除 添加 修改 属性
+			person.name="liaohs1"
+			person.arr.push('person')
+			Object.freeze(person.obj) //冻结对象对象 防止 删除 添加 修改 属性
+			// Object.defineProperty(person,"obj",{
+			// 	writable:false
+			// })
+			person.obj.b="a"
+			person.obj.arr.push(1)
+			person.obj.d="d"
+			console.log(person.obj)	
+
+	
+
+
+		function Book(){
+			this.name="Book";
+			this.pages=100
+		}
+		Book.prototype={
+			constructor:Book,
+			arr:[],
+			obj:{},
+			description:"this is a book"
+		}
+
+		// Object.freeze(Book) 
+
+
+
+		var book1=new Book();
+		var book2=new Book()
+		Object.freeze(book1) 
+
+		book2.description.split(" ")
+
+		book1.name="d"
+		book1.arr.push("arr")
+
+		console.log(book1)
+		console.log(book2)
+		console.log(book1.__proto__)
+		console.log(book2.__proto__)
+
+
+	</script>
+	
+</body>
+</html>

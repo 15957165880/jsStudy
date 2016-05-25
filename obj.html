@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script type="text/javascript">
+		var person={};
+			person.name="liaohs";
+			person.age="29";
+			person.job="web";
+			person.arr=[];
+
+		console.log(person)
+		console.log(Object.isExtensible(person)) //判断是否可以扩展
+		Object.preventExtensions(person) //不可扩展 防止添加属性
+			person.like="read"
+			person.name="liaohs1"
+		console.log(Object.isExtensible(person)) //判断是否可以扩展
+			
+
+		// Object.defineProperty(person,'like',{
+
+		// })
+
+		console.log(Object.isSealed(person)) //判断对象是否密封
+			Object.seal(person) //密封对象 防止删除属性
+			delete person.age
+
+		console.log(Object.isSealed(person))
+		console.log(person)	
+
+
+		console.log(Object.isFrozen(person)) //判断对象是否冻结
+			Object.freeze(person) //冻结对象对象 防止 删除 添加 修改 属性
+			person.name="liaohs"
+
+
+		console.log(Object.isFrozen(person))
+		console.log(person)	
+
+		person.arr.push('person')
+
+		console.log(person)	
+
+
+
+
+		console.log(window.person)
+			b={}
+			for(var i in person){
+				console.log(i)
+				b[i]=person[i]
+			}
+			b.like="read"
+		var person=b
+
+		console.log(b)
+		person.address="hangzhou"
+		console.log(person)
+
+
+		function inheritPrototype(fn1,fn2){
+			var prototype=Object(fn1.prototype)
+			prototype.constructor=fn2;
+			fn2.prototype=prototype;
+		}
+
+		function Func1(name,age){
+			this.name=name;
+			this.age=age;
+		}
+		Func1.prototype.sayWorkyears=function(){
+			return this.age-26
+		}
+		function Func2(name,age,job){
+			this.job=job;
+			Func1.call(this,name,age)
+		}
+		inheritPrototype(Func1,Func2)
+
+		var person1=new Func2("liaohs",29,"web")
+
+		console.log(person1)
+		
+		console.log(person1.sayWorkyears())
+
+
+		function Book(){
+			this.name="book"
+		}
+		Book.prototype={
+			constructor:Book,
+			pages:100,
+			arr:[],
+			obj:{},
+			description:"this is a book"
+		}
+
+		
+
+		var book1=new Book()
+		var book2=new Book()
+
+		console.log(typeof Book.prototype)
+
+
+		
+		console.log(book1)
+		console.log(book2)
+
+		Object.freeze(book1.__proto__)
+
+		book1.pages=102
+		book1.name="book1"
+		console.log(book1.pages)
+		console.log(book2.pages)
+
+		
+
+		console.log(book1.arr)
+		console.log(book2.arr)
+		book1.arr=2
+		book2.arr=1
+		console.log(book1.arr)
+		console.log(book2.arr)
+		// book1.obj={name:"name"}
+
+		
+
+		book1.obj.k="k"
+
+		console.log(book1.obj)
+		console.log(book2.obj)
+
+
+		console.log(book1)
+		console.log(book2)
+
+
+
+
+
+
+	</script>
+	
+</body>
+</html>
